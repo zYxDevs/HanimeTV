@@ -26,7 +26,7 @@ class HanimeTV:
                 sys.exit()
 
     def pre_session(captcha_token):
-        url = self.host + "/api/v1/pre-session"
+        url = f"{self.host}/api/v1/pre-session"
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
             'Accept': 'application/json, text/plain, */*',
@@ -60,7 +60,7 @@ class HanimeTV:
             "sign_in_token": pre_session["sign_in_token"]
         }
         """
-        url = self.mapi + "/api/v4/sessions"
+        url = f"{self.mapi}/api/v4/sessions"
         headers = {
             'accept': 'application/json, text/plain, */*',
             'x-directive': 'api',
@@ -104,23 +104,24 @@ class HanimeTV:
 
     def info(self, url):
         query = url.split("/")[4]
-        url = self.host + "/api/v5/hentai-videos/" + query
+        url = f"{self.host}/api/v5/hentai-videos/{query}"
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'en-US,en;q=0.5',
-            'Referer': '{}/hentai-videos/{}'.format(self.host, query),
+            'Referer': f'{self.host}/hentai-videos/{query}',
             'X-Directive': 'api',
             'X-Session-Token': self.session,
             'Connection': 'keep-alive',
-            'TE': 'Trailers'
+            'TE': 'Trailers',
         }
+
         req = requests.get(url, headers=headers)
         return json.loads(req.text)
 
     def storyboards(self, url):
         hid = self.info(url)["hentai_video"]["id"]
-        url = self.host + "/api/v1/hentai_video_storyboards?hv_id={}".format(str(hid))
+        url = self.host + f"/api/v1/hentai_video_storyboards?hv_id={str(hid)}"
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
             'Accept': 'application/json, text/plain, */*',
@@ -151,7 +152,7 @@ class HanimeTV:
         }
         """
         if self.session != '':
-            url = self.mapi + "/api/v4/downloads/" + url.split("/")[4]
+            url = f"{self.mapi}/api/v4/downloads/" + url.split("/")[4]
             headers = {
                 'accept': 'application/json, text/plain, */*',
                 'x-directive': 'api',
